@@ -143,23 +143,66 @@ function Projects() {
 }
 
 function Issues() {
-  const issues = [
-    "Fix login bug",
-    "Add search feature",
-    "Update dashboard",
-    "Fix API error",
-  ];
+  const [issues, setIssues] = useState<Issue[]>([
+    { id: 1, title: "Fix login bug", status: "Todo" },
+    { id: 2, title: "Add search feature", status: "In Progress" },
+    { id: 3, title: "Update dashboard", status: "Completed" },
+    { id: 4, title: "Fix API error", status: "Todo" },
+  ]);
+
+  const [title, setTitle] = useState("");
+
+  function handleAddIssue() {
+    if (title.trim() === "") {
+      return;
+    }
+
+    const newIssue: Issue = {
+      id: issues.length + 1,
+      title: title,
+      status: "Todo",
+    };
+
+    setIssues([...issues, newIssue]);
+    setTitle("");
+  }
 
   return (
     <main>
       <section className="page-card">
         <h2>Issues</h2>
-        <p className="subtitle">Track and manage development tasks.</p>
+        <p className="subtitle">
+          Track and manage development tasks.
+        </p>
+
+        <div className="issue-form">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter a new issue..."
+          />
+
+          <button onClick={handleAddIssue}>
+            Add Issue
+          </button>
+        </div>
 
         <div className="simple-list">
-          {issues.map((issue, index) => (
-            <div className="simple-item" key={index}>
-              #{index + 1} — {issue}
+          {issues.map((issue) => (
+            <div className="issue-card" key={issue.id}>
+              <div>
+                <span className="issue-number">#{issue.id}</span>
+                <h3>{issue.title}</h3>
+              </div>
+
+              <span
+                className={`status ${issue.status
+                  .toLowerCase()
+                  .replace(" ", "-")}`}
+              >
+                {issue.status}
+              </span>
             </div>
           ))}
         </div>
