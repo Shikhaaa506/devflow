@@ -167,10 +167,24 @@ function Issues() {
     setTitle("");
   }
 
+  function handleStatusChange(
+    id: number,
+    newStatus: Issue["status"]
+  ) {
+    setIssues(
+      issues.map((issue) =>
+        issue.id === id
+          ? { ...issue, status: newStatus }
+          : issue
+      )
+    );
+  }
+
   return (
     <main>
       <section className="page-card">
         <h2>Issues</h2>
+
         <p className="subtitle">
           Track and manage development tasks.
         </p>
@@ -192,17 +206,26 @@ function Issues() {
           {issues.map((issue) => (
             <div className="issue-card" key={issue.id}>
               <div>
-                <span className="issue-number">#{issue.id}</span>
+                <span className="issue-number">
+                  #{issue.id}
+                </span>
+
                 <h3>{issue.title}</h3>
               </div>
 
-              <span
-                className={`status ${issue.status
-                  .toLowerCase()
-                  .replace(" ", "-")}`}
+              <select
+                value={issue.status}
+                onChange={(e) =>
+                  handleStatusChange(
+                    issue.id,
+                    e.target.value as Issue["status"]
+                  )
+                }
               >
-                {issue.status}
-              </span>
+                <option value="Todo">Todo</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
             </div>
           ))}
         </div>
@@ -210,6 +233,7 @@ function Issues() {
     </main>
   );
 }
+
 
 function Team() {
   const members = [

@@ -319,3 +319,40 @@ main > section:first-child h2 {
     grid-template-columns: 1fr;
   }
 }
+
+.issue-form {
+  display: flex;
+  gap: 10px;
+  margin: 25px 0;
+}
+
+.issue-form input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #e5e9f0;
+  border-radius: 8px;
+  font: inherit;
+  outline: none;
+}
+
+.issue-form input:focus {
+  border-color: #172033;
+}
+
+.issue-form button {
+  border: none;
+  background: #172033;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 8px;
+}
+
+.issue-form button:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+  .issue-form {
+    flex-direction: column;
+  }
+}
