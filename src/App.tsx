@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import "./App.css";
 
 type StatCardProps = {
   number: number;
@@ -142,14 +145,13 @@ function Projects() {
   );
 }
 
-function Issues() {
-  const [issues, setIssues] = useState<Issue[]>([
-    { id: 1, title: "Fix login bug", status: "Todo" },
-    { id: 2, title: "Add search feature", status: "In Progress" },
-    { id: 3, title: "Update dashboard", status: "Completed" },
-    { id: 4, title: "Fix API error", status: "Todo" },
-  ]);
-
+function Issues({
+  issues,
+  setIssues,
+}: {
+  issues: Issue[];
+  setIssues: React.Dispatch<React.SetStateAction<Issue[]>>;
+}) {
   const [title, setTitle] = useState("");
 
   function handleAddIssue() {
@@ -204,7 +206,10 @@ function Issues() {
 
         <div className="simple-list">
           {issues.map((issue) => (
-            <div className="issue-card" key={issue.id}>
+            <div
+              className="issue-card"
+              key={issue.id}
+            >
               <div>
                 <span className="issue-number">
                   #{issue.id}
@@ -223,8 +228,14 @@ function Issues() {
                 }
               >
                 <option value="Todo">Todo</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
+
+                <option value="In Progress">
+                  In Progress
+                </option>
+
+                <option value="Completed">
+                  Completed
+                </option>
               </select>
             </div>
           ))}
@@ -269,6 +280,14 @@ function Team() {
 }
 
 function App() {
+
+  const [issues, setIssues] = useState<Issue[]>([
+  { id: 1, title: "Fix login bug", status: "Todo" },
+  { id: 2, title: "Add search feature", status: "In Progress" },
+  { id: 3, title: "Update dashboard", status: "Completed" },
+  { id: 4, title: "Fix API error", status: "Todo" },
+]);
+
   return (
     <BrowserRouter>
       <div className="app">
@@ -290,9 +309,20 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+  path="/dashboard"
+  element={<Dashboard issues={issues} />}
+/>
           <Route path="/projects" element={<Projects />} />
-          <Route path="/issues" element={<Issues />} />
+          <Route
+  path="/issues"
+  element={
+    <Issues
+      issues={issues}
+      setIssues={setIssues}
+    />
+  }
+/>
           <Route path="/team" element={<Team />} />
         </Routes>
       </div>
